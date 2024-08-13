@@ -10,11 +10,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.dm.berxley.newsapp.ui.theme.NewsAppTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var keepSplashAlive = true
+        runBlocking {
+            delay(1000)
+            keepSplashAlive = false
+        }
+        installSplashScreen().setKeepOnScreenCondition {
+            keepSplashAlive
+        }
+
         setContent {
             NewsAppTheme {
                 // A surface container using the 'background' color from the theme
