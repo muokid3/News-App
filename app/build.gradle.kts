@@ -82,6 +82,12 @@ dependencies {
     implementation ("com.google.dagger:hilt-android:2.52")
     kapt ("com.google.dagger:hilt-compiler:2.52")
     implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    // For instrumentation tests
+    androidTestImplementation  ("com.google.dagger:hilt-android-testing:2.52")
+    androidTestAnnotationProcessor ("com.google.dagger:hilt-compiler:2.52")
+    // For local unit tests
+    testImplementation ("com.google.dagger:hilt-android-testing:2.52")
+    testAnnotationProcessor ("com.google.dagger:hilt-compiler:2.52")
 
 
     //Retrofit
