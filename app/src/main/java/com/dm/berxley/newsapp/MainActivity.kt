@@ -3,6 +3,7 @@ package com.dm.berxley.newsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.dm.berxley.newsapp.presentation.onboarding.OnboardingScreen
 import com.dm.berxley.newsapp.ui.theme.NewsAppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var keepSplashAlive = true
+        var keepSplashAlive: Boolean
         runBlocking {
             delay(1000)
             keepSplashAlive = false
@@ -36,25 +38,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    OnboardingScreen()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     NewsAppTheme {
-        Greeting("Android")
+        OnboardingScreen()
     }
 }
