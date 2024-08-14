@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,6 +18,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import com.dm.berxley.newsapp.domain.manager.LocalUserManager
+import com.dm.berxley.newsapp.presentation.navgraph.NavGraph
 import com.dm.berxley.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.dm.berxley.newsapp.presentation.onboarding.OnboardingScreen
 import com.dm.berxley.newsapp.ui.theme.NewsAppTheme
@@ -30,24 +32,19 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var localUserManager: LocalUserManager
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var keepSplashAlive: Boolean
-        runBlocking {
-            delay(1000)
-            keepSplashAlive = false
-        }
-        installSplashScreen().setKeepOnScreenCondition {
-            keepSplashAlive
-        }
-
-        lifecycleScope.launch {
-            localUserManager.readAppEntry().collectLatest {
-                Log.d("Test", it.toString())
+//        var keepSplashAlive: Boolean
+//        runBlocking {
+//            delay(1000)
+//            keepSplashAlive = false
+//        }
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                viewModel.splashCondition
             }
         }
 
@@ -58,9 +55,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel = hiltViewModel<OnBoardingViewModel>()
-
-                    OnboardingScreen(event = viewModel::onEvent)
+                    val startDestination = viewModel.startDestination
+                    NavGraph(startDestination = startDestination)
                 }
             }
         }
