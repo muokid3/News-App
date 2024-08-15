@@ -63,6 +63,7 @@ fun SearchBar(
 
 
     Box(modifier = modifier) {
+        val containerColor = colorResource(id = R.color.input_background)
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,14 +87,16 @@ fun SearchBar(
                 )
             },
             shape = MaterialTheme.shapes.medium,
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = colorResource(id = R.color.input_background),
+            colors = TextFieldDefaults.colors(
                 focusedTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                focusedContainerColor = containerColor,
+                unfocusedContainerColor = containerColor,
+                disabledContainerColor = containerColor,
                 cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 errorIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
             ),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
