@@ -47,7 +47,7 @@ fun SearchBar(
     text: String,
     readOnly: Boolean,
     onClick: (() -> Unit)? = null,
-    onValueChange: () -> Unit,
+    onValueChange: (String) -> Unit,
     onSearch: () -> Unit
 ) {
 
