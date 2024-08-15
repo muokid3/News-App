@@ -20,8 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.dm.berxley.newsapp.presentation.Dimens.MediumPadding2
 import com.dm.berxley.newsapp.presentation.Dimens.PageIndicatorWidth
-import com.dm.berxley.newsapp.presentation.onboarding.components.NewsButton
-import com.dm.berxley.newsapp.presentation.onboarding.components.NewsTextButton
+import com.dm.berxley.newsapp.presentation.common.NewsButton
+import com.dm.berxley.newsapp.presentation.common.NewsTextButton
 import com.dm.berxley.newsapp.presentation.onboarding.components.OnBoardingPage
 import com.dm.berxley.newsapp.presentation.onboarding.components.PageIndicator
 import kotlinx.coroutines.launch
