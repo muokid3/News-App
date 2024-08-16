@@ -33,7 +33,7 @@ fun NavGraph(
             route = Screen.NewsNavigator.route
         ) {
             composable(route = Screen.NewsNavigation.route) {
-                HomeScreen()
+                HomeScreen(navController)
             }
         }
     }

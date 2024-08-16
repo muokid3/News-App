@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.dm.berxley.newsapp.R
 import com.dm.berxley.newsapp.presentation.Dimens.ExtraSmallPadding
 import com.dm.berxley.newsapp.presentation.Dimens.ExtraSmallPadding2
@@ -33,10 +34,13 @@ import com.dm.berxley.newsapp.presentation.Dimens.MediumPadding1
 import com.dm.berxley.newsapp.presentation.common.ArticleCardShimmerEffect
 import com.dm.berxley.newsapp.presentation.common.SearchBar
 import com.dm.berxley.newsapp.presentation.home.components.ArticleCard
+import com.dm.berxley.newsapp.presentation.navgraph.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navHostController: NavHostController
+) {
     val newsViewModel = hiltViewModel<HomeViewModel>()
     val homeState = newsViewModel.homeState.collectAsState().value
 
@@ -54,7 +58,16 @@ fun HomeScreen() {
 
             Spacer(modifier = Modifier.height(MediumPadding1))
 
-            SearchBar(modifier = Modifier.padding(horizontal = MediumPadding1), text = "", readOnly = true, onValueChange = {}, onClick = {}, onSearch = {})
+            SearchBar(
+                modifier = Modifier.padding(horizontal = MediumPadding1),
+                text = "",
+                readOnly = true,
+                onValueChange = {},
+                onClick = {
+                    navHostController.navigate(Screen.SearchScreen.route)
+                },
+                onSearch = {}
+            )
 
             Spacer(modifier = Modifier.height(MediumPadding1))
 
@@ -90,6 +103,7 @@ fun HomeScreen() {
                     items(homeState.newsList.size) { index ->
                         homeState.newsList[index]?.let {
                             ArticleCard(article = homeState.newsList[index]) {
+                                // navHostController.navigate(Screen.DetailsScreen.route)
                             }
                         }
                     }
