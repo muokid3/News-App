@@ -17,8 +17,39 @@ class NewsRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading(true))
 
-            var responseFromApi = try {
+            val responseFromApi = try {
                 newsApi.getNews(sources.joinToString(separator = ",") { it })
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Error loading news"))
+                return@flow
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Error loading news"))
+                return@flow
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Error loading news"))
+                return@flow
+            }
+
+            emit(Resource.Success(data = responseFromApi.articles))
+            emit(Resource.Loading(false))
+            return@flow
+        }
+    }
+
+    override fun searchNews(
+        searchQuery: String,
+        sources: List<String>
+    ): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+
+            val responseFromApi = try {
+                newsApi.searchNews(
+                    searchQuery = searchQuery,
+                    sources = sources.joinToString(separator = ",") { it })
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Error loading news"))

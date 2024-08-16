@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dm.berxley.newsapp.presentation.home.HomeScreen
 import com.dm.berxley.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.dm.berxley.newsapp.presentation.onboarding.OnboardingScreen
+import com.dm.berxley.newsapp.presentation.search.SearchScreen
 
 @Composable
 fun NavGraph(
@@ -34,6 +35,10 @@ fun NavGraph(
         ) {
             composable(route = Screen.NewsNavigation.route) {
                 HomeScreen(navController)
+            }
+
+            composable(route = Screen.SearchScreen.route) {
+                SearchScreen(navController)
             }
         }
     }
