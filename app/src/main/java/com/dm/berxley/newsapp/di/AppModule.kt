@@ -1,6 +1,11 @@
 package com.dm.berxley.newsapp.di
 
 import android.app.Application
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.dm.berxley.newsapp.data.local.NewsDao
+import com.dm.berxley.newsapp.data.local.NewsDatabase
+import com.dm.berxley.newsapp.data.local.NewsTypeConverter
 import com.dm.berxley.newsapp.data.manager.LocalUserManagerImpl
 import com.dm.berxley.newsapp.data.remote.NewsApi
 import com.dm.berxley.newsapp.data.repository.NewsRepositoryImpl
@@ -45,4 +50,25 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNewsRepository(newsApi: NewsApi): NewsRepository = NewsRepositoryImpl(newsApi)
+
+
+    @Provides
+    @Singleton
+    fun provideRoomDatabase(application: Application): NewsDatabase {
+
+        return Room.databaseBuilder(
+            context = application,
+            name = Constants.ROOM_DB_NAME,
+            klass = NewsDatabase::class.java
+        )
+            .addTypeConverter(NewsTypeConverter())
+            .fallbackToDestructiveMigration()
+            .build()
+
+    }
+
+    @Provides
+    @Singleton
+    fun provideNewsDao( newsDatabase: NewsDatabase): NewsDao = newsDatabase.newsDao
+
 }
