@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.dm.berxley.newsapp.presentation.bookmark.BookmarkScreen
 import com.dm.berxley.newsapp.presentation.home.HomeScreen
 import com.dm.berxley.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.dm.berxley.newsapp.presentation.onboarding.OnboardingScreen
@@ -39,6 +40,10 @@ fun NavGraph(
 
             composable(route = Screen.SearchScreen.route) {
                 SearchScreen(navController)
+            }
+
+            composable(route = Screen.BookmarkScreen.route) {
+                BookmarkScreen(navController)
             }
         }
     }
