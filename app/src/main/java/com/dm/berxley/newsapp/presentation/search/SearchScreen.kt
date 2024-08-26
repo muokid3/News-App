@@ -20,11 +20,16 @@ import androidx.navigation.NavHostController
 import com.dm.berxley.newsapp.presentation.Dimens
 import com.dm.berxley.newsapp.presentation.Dimens.MediumPadding1
 import com.dm.berxley.newsapp.presentation.common.SearchBar
+import com.dm.berxley.newsapp.presentation.home.HomeViewModel
 import com.dm.berxley.newsapp.presentation.home.ShimmerEffect
 import com.dm.berxley.newsapp.presentation.home.components.ArticleCard
+import com.dm.berxley.newsapp.presentation.navgraph.Screen
 
 @Composable
-fun SearchScreen(navHostController: NavHostController) {
+fun SearchScreen(
+    newsViewModel: HomeViewModel,
+    navHostController: NavHostController
+) {
 
     val searchViewModel = hiltViewModel<SearchViewModel>()
     val searchState = searchViewModel.searchState.collectAsState().value
@@ -72,9 +77,10 @@ fun SearchScreen(navHostController: NavHostController) {
                         contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding2)
                     ) {
                         items(searchState.newsList.size) { index ->
-                            searchState.newsList[index]?.let {
+                            searchState.newsList[index]?.let { article ->
                                 ArticleCard(article = searchState.newsList[index]) {
-                                    // navHostController.navigate(Screen.DetailsScreen.route)
+                                    newsViewModel.setArticle(article)
+                                    navHostController.navigate(Screen.DetailsScreen.route)
                                 }
                             }
                         }

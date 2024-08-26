@@ -56,7 +56,7 @@ fun NavGraph(
             }
 
             composable(route = Screen.SearchScreen.route) {
-                SearchScreen(navController)
+                SearchScreen(newsViewModel = newsViewModel, navController)
             }
 
             composable(route = Screen.BookmarkScreen.route) {
