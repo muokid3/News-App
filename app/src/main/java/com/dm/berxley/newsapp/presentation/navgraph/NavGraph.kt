@@ -1,7 +1,12 @@
 package com.dm.berxley.newsapp.presentation.navgraph
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -14,11 +19,16 @@ import com.dm.berxley.newsapp.presentation.search.SearchScreen
 
 @Composable
 fun NavGraph(
-    startDestination: String
+    startDestination: String,
+    paddingValues: PaddingValues,
+    navController: NavController
 ) {
-    val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController as NavHostController,
+        startDestination = startDestination,
+        modifier = Modifier.padding(paddingValues)
+    ) {
         navigation(
             startDestination = Screen.OnBoardingScreen.route,
             route = Screen.AppStartNavigator.route
@@ -31,10 +41,10 @@ fun NavGraph(
         }
 
         navigation(
-            startDestination = Screen.NewsNavigation.route,
+            startDestination = Screen.HomeScreen.route,
             route = Screen.NewsNavigator.route
         ) {
-            composable(route = Screen.NewsNavigation.route) {
+            composable(route = Screen.HomeScreen.route) {
                 HomeScreen(navController)
             }
 

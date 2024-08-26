@@ -1,6 +1,7 @@
 package com.dm.berxley.newsapp
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,9 @@ class MainViewModel @Inject constructor(
     var splashCondition by mutableStateOf(true)
         private set
 
+    var selectedBottomIndex by mutableIntStateOf(0)
+        private set
+
 
     var startDestination by mutableStateOf(Screen.AppStartNavigator.route)
         private set
@@ -41,6 +45,11 @@ class MainViewModel @Inject constructor(
 
           }.collect()
       }
+    }
+
+
+    fun setBottomIndex(index: Int){
+        selectedBottomIndex = index
     }
 
 }

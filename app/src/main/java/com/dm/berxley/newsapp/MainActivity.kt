@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,8 +21,11 @@ import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import com.dm.berxley.newsapp.domain.manager.LocalUserManager
+import com.dm.berxley.newsapp.presentation.common.BottomNavigationBar
 import com.dm.berxley.newsapp.presentation.navgraph.NavGraph
+import com.dm.berxley.newsapp.presentation.navgraph.Screen
 import com.dm.berxley.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.dm.berxley.newsapp.presentation.onboarding.OnboardingScreen
 import com.dm.berxley.newsapp.ui.theme.NewsAppTheme
@@ -36,7 +40,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +52,13 @@ class MainActivity : ComponentActivity() {
 //        }
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                viewModel.splashCondition
+                mainViewModel.splashCondition
             }
         }
 
         setContent {
+            val navController = rememberNavController()
+
             NewsAppTheme {
                 // A surface container using the 'background' color from the theme
 
@@ -70,8 +76,24 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val startDestination = viewModel.startDestination
-                    NavGraph(startDestination = startDestination)
+
+                    Scaffold(
+                        bottomBar = {
+                            if (mainViewModel.startDestination == Screen.NewsNavigator.route){
+                                BottomNavigationBar(
+                                    navController = navController,
+                                    mainViewModel = mainViewModel
+                                )
+                            }
+                        }
+                    ) { paddingValues ->
+                        val startDestination = mainViewModel.startDestination
+                        NavGraph(
+                            startDestination = startDestination,
+                            paddingValues = paddingValues,
+                            navController = navController
+                        )
+                    }
                 }
             }
         }

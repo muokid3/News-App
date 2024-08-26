@@ -12,9 +12,6 @@ sealed class Screen(
 
     object NewsNavigator: Screen(route = "newsNavigator")
 
-    object NewsNavigation: Screen(route = "newsNavigation")
-
-
 
     object HomeScreen: Screen(route = "homeScreen")
     object SearchScreen: Screen(route = "searchScreen")
