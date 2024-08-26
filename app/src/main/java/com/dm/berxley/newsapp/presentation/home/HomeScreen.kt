@@ -2,6 +2,7 @@
 
 package com.dm.berxley.newsapp.presentation.home
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -35,14 +37,18 @@ import com.dm.berxley.newsapp.presentation.common.ArticleCardShimmerEffect
 import com.dm.berxley.newsapp.presentation.common.SearchBar
 import com.dm.berxley.newsapp.presentation.home.components.ArticleCard
 import com.dm.berxley.newsapp.presentation.navgraph.Screen
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
+    newsViewModel: HomeViewModel,
     navHostController: NavHostController
 ) {
-    val newsViewModel = hiltViewModel<HomeViewModel>()
+//    val newsViewModel = hiltViewModel<HomeViewModel>()
     val homeState = newsViewModel.homeState.collectAsState().value
+    val context = LocalContext.current
 
     Scaffold { paddingValues ->
 
@@ -101,9 +107,10 @@ fun HomeScreen(
                     contentPadding = PaddingValues(all = ExtraSmallPadding2)
                 ) {
                     items(homeState.newsList.size) { index ->
-                        homeState.newsList[index]?.let {
+                        homeState.newsList[index]?.let { article ->
                             ArticleCard(article = homeState.newsList[index]) {
-                                // navHostController.navigate(Screen.DetailsScreen.route)
+                                newsViewModel.setArticle(article)
+                                navHostController.navigate(Screen.DetailsScreen.route)
                             }
                         }
                     }

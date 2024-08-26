@@ -11,18 +11,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.dm.berxley.newsapp.domain.models.Article
 import com.dm.berxley.newsapp.presentation.bookmark.BookmarkScreen
+import com.dm.berxley.newsapp.presentation.details.DetailsScreen
 import com.dm.berxley.newsapp.presentation.home.HomeScreen
+import com.dm.berxley.newsapp.presentation.home.HomeViewModel
 import com.dm.berxley.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.dm.berxley.newsapp.presentation.onboarding.OnboardingScreen
 import com.dm.berxley.newsapp.presentation.search.SearchScreen
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 @Composable
 fun NavGraph(
+    newsViewModel: HomeViewModel,
     startDestination: String,
     paddingValues: PaddingValues,
     navController: NavController
 ) {
+
 
     NavHost(
         navController = navController as NavHostController,
@@ -45,7 +52,7 @@ fun NavGraph(
             route = Screen.NewsNavigator.route
         ) {
             composable(route = Screen.HomeScreen.route) {
-                HomeScreen(navController)
+                HomeScreen(newsViewModel = newsViewModel, navController)
             }
 
             composable(route = Screen.SearchScreen.route) {
@@ -54,6 +61,10 @@ fun NavGraph(
 
             composable(route = Screen.BookmarkScreen.route) {
                 BookmarkScreen(navController)
+            }
+
+            composable(route = Screen.DetailsScreen.route) {
+                DetailsScreen(newsViewModel = newsViewModel, navHostController = navController)
             }
         }
     }

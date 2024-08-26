@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.dm.berxley.newsapp.domain.manager.LocalUserManager
 import com.dm.berxley.newsapp.presentation.common.BottomNavigationBar
+import com.dm.berxley.newsapp.presentation.home.HomeViewModel
 import com.dm.berxley.newsapp.presentation.navgraph.NavGraph
 import com.dm.berxley.newsapp.presentation.navgraph.Screen
 import com.dm.berxley.newsapp.presentation.onboarding.OnBoardingViewModel
@@ -88,7 +89,10 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { paddingValues ->
                         val startDestination = mainViewModel.startDestination
+                        val newsViewModel = hiltViewModel<HomeViewModel>()
+
                         NavGraph(
+                            newsViewModel = newsViewModel,
                             startDestination = startDestination,
                             paddingValues = paddingValues,
                             navController = navController

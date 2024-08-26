@@ -1,7 +1,12 @@
 package com.dm.berxley.newsapp.presentation.home
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dm.berxley.newsapp.domain.models.Article
+import com.dm.berxley.newsapp.domain.models.Source
 import com.dm.berxley.newsapp.domain.repositories.NewsRepository
 import com.dm.berxley.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +22,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     var homeState = MutableStateFlow(HomeState())
         private set
+
 
     init {
         getNews()
@@ -54,6 +60,12 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    fun setArticle(article: Article){
+        homeState.update {
+            it.copy(selectedArticle = article)
         }
     }
 }
