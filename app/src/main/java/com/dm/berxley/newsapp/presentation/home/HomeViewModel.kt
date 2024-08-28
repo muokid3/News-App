@@ -11,6 +11,7 @@ import com.dm.berxley.newsapp.domain.repositories.NewsRepository
 import com.dm.berxley.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,8 +21,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
-    var homeState = MutableStateFlow(HomeState())
-        private set
+    private val _homeState = MutableStateFlow(HomeState())
+    val homeState = _homeState.asStateFlow()
 
 
     init {
@@ -31,7 +32,7 @@ class HomeViewModel @Inject constructor(
     private fun getNews() {
         viewModelScope.launch {
             //set status to loading
-            homeState.update {
+            _homeState.update {
                 it.copy(isLoading = true)
             }
 
@@ -40,20 +41,20 @@ class HomeViewModel @Inject constructor(
                 .collectLatest { result ->
                     when (result) {
                         is Resource.Error -> {
-                            homeState.update {
+                            _homeState.update {
                                 it.copy(isLoading = false)
                             }
                         }
 
                         is Resource.Loading -> {
-                            homeState.update {
+                            _homeState.update {
                                 it.copy(isLoading = result.isLoading)
                             }
                         }
 
                         is Resource.Success -> {
                             result.data?.let { listResults ->
-                                homeState.update {
+                                _homeState.update {
                                     it.copy(isLoading = false, newsList = listResults)
                                 }
                             }
@@ -64,7 +65,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setArticle(article: Article){
-        homeState.update {
+        _homeState.update {
             it.copy(selectedArticle = article)
         }
     }
