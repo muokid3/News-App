@@ -1,10 +1,12 @@
 package com.dm.berxley.newsapp.presentation.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dm.berxley.newsapp.data.local.NewsDao
 import com.dm.berxley.newsapp.domain.models.Article
 import com.dm.berxley.newsapp.domain.models.Source
 import com.dm.berxley.newsapp.domain.repositories.NewsRepository
@@ -19,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val newsRepository: NewsRepository
+    private val newsRepository: NewsRepository,
+    private val newsRoomDao: NewsDao
 ) : ViewModel() {
     private val _homeState = MutableStateFlow(HomeState())
     val homeState = _homeState.asStateFlow()
@@ -27,6 +30,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         getNews()
+        getBookmarkedArticles()
     }
 
     private fun getNews() {
@@ -64,9 +68,52 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun setArticle(article: Article){
+    fun setArticle(article: Article) {
         _homeState.update {
             it.copy(selectedArticle = article)
         }
     }
+
+    fun bookMarkArticle(article: Article) {
+        viewModelScope.launch {
+            if (_homeState.value.isBookmarked) {
+
+                newsRepository.deleteArticle(article)
+                _homeState.update {
+                    it.copy(isBookmarked = false)
+                }
+            } else {
+
+                newsRepository.upsertArticle(article)
+                _homeState.update {
+                    it.copy(isBookmarked = true)
+                }
+            }
+        }
+    }
+
+    private fun getBookmarkedArticles() {
+        viewModelScope.launch {
+            newsRoomDao.getArticles().collectLatest { articlesList ->
+                _homeState.update {
+                    it.copy(bookmarkedArticles = articlesList)
+                }
+            }
+        }
+    }
+
+    fun checkIfBookmarked() {
+        _homeState.value.selectedArticle?.let { selectedArticle ->
+            val isBookmarked = homeState.value.bookmarkedArticles.any {
+                it.url == selectedArticle.url
+            }
+
+            Log.e("BOOKMARKING", "checkIfBookmarked: $isBookmarked")
+
+            _homeState.update {
+                it.copy(isBookmarked = isBookmarked)
+            }
+        }
+    }
+
 }

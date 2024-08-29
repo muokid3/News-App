@@ -60,7 +60,7 @@ fun NavGraph(
             }
 
             composable(route = Screen.BookmarkScreen.route) {
-                BookmarkScreen(navController)
+                BookmarkScreen(newsViewModel = newsViewModel, navController)
             }
 
             composable(route = Screen.DetailsScreen.route) {

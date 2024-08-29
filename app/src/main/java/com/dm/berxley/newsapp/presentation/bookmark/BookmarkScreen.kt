@@ -24,10 +24,13 @@ import androidx.navigation.compose.rememberNavController
 import com.dm.berxley.newsapp.R
 import com.dm.berxley.newsapp.presentation.Dimens
 import com.dm.berxley.newsapp.presentation.Dimens.MediumPadding1
+import com.dm.berxley.newsapp.presentation.home.HomeViewModel
 import com.dm.berxley.newsapp.presentation.home.components.ArticleCard
+import com.dm.berxley.newsapp.presentation.navgraph.Screen
 
 @Composable
 fun BookmarkScreen(
+    newsViewModel: HomeViewModel,
     navHostController: NavHostController
 ) {
     val viewModel = hiltViewModel<BookmarkViewModel>()
@@ -69,14 +72,14 @@ fun BookmarkScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = MediumPadding1),
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(MediumPadding1),
                     contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding2)
                 ) {
                     items(bookMarkState.articles.size) { index ->
                         ArticleCard(article = bookMarkState.articles[index]) {
-                            // navHostController.navigate(Screen.DetailsScreen.route)
+                            newsViewModel.setArticle(bookMarkState.articles[index])
+                            navHostController.navigate(Screen.DetailsScreen.route)
                         }
                     }
                 }
@@ -84,10 +87,4 @@ fun BookmarkScreen(
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookMarkPrev() {
-    BookmarkScreen(navHostController = rememberNavController())
 }

@@ -32,7 +32,8 @@ fun DetailsTopBar(
     onBrowsingClick: () -> Unit,
     onShareClick: () -> Unit,
     onBookmarkClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    isBookmarked: Boolean = false
 ) {
 
     TopAppBar(
@@ -52,7 +53,7 @@ fun DetailsTopBar(
         },
         actions = {
             IconButton(onClick = onBookmarkClick) {
-                Icon(imageVector = Icons.Outlined.BookmarkBorder, contentDescription = null)
+                Icon(imageVector = if (isBookmarked) {Icons.Filled.Bookmark} else {Icons.Outlined.BookmarkBorder}, contentDescription = null)
             }
             IconButton(onClick = onShareClick) {
                 Icon(imageVector = Icons.Default.Share, contentDescription = null)
@@ -74,8 +75,7 @@ fun TopBarPrev() {
             title = "Test",
             onBrowsingClick = { /*TODO*/ },
             onShareClick = { /*TODO*/ },
-            onBookmarkClick = { /*TODO*/ }) {
-
-        }
+            onBookmarkClick = { /*TODO*/ },
+            onBackClick = { /*TODO*/ })
     }
 }

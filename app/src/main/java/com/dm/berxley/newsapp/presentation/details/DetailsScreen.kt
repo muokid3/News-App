@@ -45,9 +45,8 @@ fun DetailsScreen(
 
     val context = LocalContext.current
 
-//    val newsViewModel = hiltViewModel<HomeViewModel>()
-
     val homeState = newsViewModel.homeState.collectAsState()
+    newsViewModel.checkIfBookmarked()
 
     homeState.value.selectedArticle?.let { article ->
         Scaffold(
@@ -72,11 +71,22 @@ fun DetailsScreen(
 
                         }
                     },
-                    onBookmarkClick = { /*TODO*/ },
+                    onBookmarkClick = {
+
+                        if (homeState.value.isBookmarked) {
+                            Toast.makeText(context, "Bookmark Removed", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Bookmark Added", Toast.LENGTH_SHORT).show()
+                        }
+
+                        newsViewModel.bookMarkArticle(article)
+
+                    },
                     onBackClick = {
                         navHostController.navigateUp()
                     },
-                    title = article.title
+                    title = article.title,
+                    isBookmarked = homeState.value.isBookmarked
                 )
             }
         ) { paddingValues ->
