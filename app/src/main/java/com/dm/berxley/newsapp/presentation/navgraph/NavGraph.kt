@@ -24,12 +24,13 @@ import com.google.gson.GsonBuilder
 
 @Composable
 fun NavGraph(
-    newsViewModel: HomeViewModel,
     startDestination: String,
     paddingValues: PaddingValues,
     navController: NavController
 ) {
 
+
+    val newsViewModel = hiltViewModel<HomeViewModel>()
 
     NavHost(
         navController = navController as NavHostController,

@@ -89,10 +89,8 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { paddingValues ->
                         val startDestination = mainViewModel.startDestination
-                        val newsViewModel = hiltViewModel<HomeViewModel>()
 
                         NavGraph(
-                            newsViewModel = newsViewModel,
                             startDestination = startDestination,
                             paddingValues = paddingValues,
                             navController = navController
