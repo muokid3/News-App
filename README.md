@@ -4,7 +4,7 @@ Offline first Kotlin android news app. Just practicing MAD skills in android
 
 Concepts used:
 
-1. MVVM architecture
+1. MVI Presentational pattern
 2. Dependency Injection with Hilt
 3. Retrofit
 4. Room DB
